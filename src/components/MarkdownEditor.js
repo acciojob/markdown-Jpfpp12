@@ -18,7 +18,7 @@ const MarkdownEditor = () => {
   return (
     <div className="app">
       <h1>Markdown Editor</h1>
-      <div className="editor">
+      <div className="text-area">
         <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
