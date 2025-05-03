@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 const MarkdownEditor = () => {
   const [inputText, setInputText] = useState("");
 
@@ -20,6 +21,7 @@ const MarkdownEditor = () => {
       <h1>Markdown Editor</h1>
       <div id="textarea">
         <textarea
+          data-cy="markdown-textarea" // Add a unique data attribute for Cypress to target
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder="Write your Markdown here"
