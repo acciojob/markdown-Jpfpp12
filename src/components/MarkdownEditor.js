@@ -1,32 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { marked } from "marked";
+import React, { useState } from "react";
+const MarkdownEditor = () => {
+  const [inputText, setInputText] = useState("");
 
-function MarkdownEditor() {
-  const [markdownText, setMarkdownText] = useState("");
-  const [htmlPreview, setHtmlPreview] = useState("");
-
-  useEffect(() => {
-    setHtmlPreview(marked.parse(markdownText));
-  }, [markdownText]);
-
-  const handleInputChange = (e) => {
-    setMarkdownText(e.target.value);
+  const parseMarkdown = (text) => {
+    text = text.replace(/\n/g, "<br/>");
+    text = text.replace(/^### (.*)/gm, "<h3>$1</h3>");
+    text = text.replace(/^## (.*)/gm, "<h2>$1</h2>");
+    text = text.replace(/^# (.*)/gm, "<h1>$1</h1>");
+    text = text.replace(/\*\*(.*)\*\*/gm, "<strong>$1</strong>");
+    text = text.replace(/\*(.*)\*/gm, "<em>$1</em>");
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/gm, '<a href="$2" target="_blank">$1</a>');
+    text = text.replace(/^\- (.*)/gm, "<ul><li>$1</li></ul>");
+    text = text.replace(/<\/ul>\n<ul>/g, "");
+    return text;
   };
 
   return (
-    <div className="editor-container">
-      <textarea
-        className="markdown-input"
-        placeholder="Enter Markdown here..."
-        value={markdownText}
-        onChange={handleInputChange}
-      />
-      <div
-        className="markdown-preview"
-        dangerouslySetInnerHTML={{ __html: htmlPreview }}
-      />
+    <div className="App">
+      <h1>Markdown Editor</h1>
+      <div className="editor">
+        <textarea
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Write your Markdown here"
+        />
+        <div
+          className="preview"
+          dangerouslySetInnerHTML={{ __html: parseMarkdown(inputText) }}
+        />
+      </div>
     </div>
   );
-}
+};
 
 export default MarkdownEditor;
