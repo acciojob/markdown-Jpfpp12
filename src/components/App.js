@@ -3,7 +3,7 @@ import React from "react";
 import MarkdownEditor from "./MarkdownEditor.js";
 function App() {
   return (
-    <div className="app-container">
+    <div className="app">
       <h1 className="title">Markdown Editor</h1>
       <MarkdownEditor />
     </div>
