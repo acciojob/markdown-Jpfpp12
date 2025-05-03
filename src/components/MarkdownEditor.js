@@ -12,7 +12,7 @@ const MarkdownEditor = () => {
   };
 
   return (
-    <div>
+    <div className="app">
       <textarea
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}
