@@ -3,10 +3,16 @@ import React, { useState, useEffect } from 'react';
 const MarkdownEditor = () => {
   const [markdownText, setMarkdownText] = useState('# Hello, Markdown!\n\nStart typing in the editor on the left.\n\n**Bold text** and *italic text*\n\n- List item 1\n- List item 2\n\n[Link example](https://example.com)');
   const [htmlOutput, setHtmlOutput] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const parsedHtml = parseMarkdown(markdownText);
-    setHtmlOutput(parsedHtml);
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      const parsedHtml = parseMarkdown(markdownText);
+      setHtmlOutput(parsedHtml);
+      setLoading(false);
+    }, 300); // Simulate a delay for parsing
+    return () => clearTimeout(timeout);
   }, [markdownText]);
 
   const handleInputChange = (e) => {
@@ -46,9 +52,9 @@ const MarkdownEditor = () => {
 
       <div className="flex flex-1 overflow-hidden">
         <div className="w-1/2 p-4 border-r border-gray-300">
-          <div className="mb-2 font-semibold text-gray-700">Editor</div>
+          <div className=" mb-2 font-semibold text-gray-700">Editor</div>
           <textarea
-            className="markdown-input w-full h-full p-2 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="textarea markdown-input w-full h-full p-2 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={markdownText}
             onChange={handleInputChange}
             placeholder="Write your markdown here..."
@@ -59,8 +65,13 @@ const MarkdownEditor = () => {
           <div className="mb-2 font-semibold text-gray-700">Preview</div>
           <div
             className="preview h-full p-4 border border-gray-300 rounded overflow-auto"
-            dangerouslySetInnerHTML={{ __html: htmlOutput }}
-          />
+          >
+            {loading ? (
+              <div className="loading text-center text-gray-500">Loading...</div>
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: htmlOutput }} />
+            )}
+          </div>
         </div>
       </div>
 
