@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const MarkdownEditor = () => {
-  const [markdownText, setMarkdownText] = useState('# Hello, Markdown!\n\nStart typing in the editor on the left.\n\n**Bold text** and *italic text*\n\n- List item 1\n- List item 2\n\n[Link example](https://example.com)');
+  const [markdownText, setMarkdownText] = useState('Hello, Markdown!');
   const [htmlOutput, setHtmlOutput] = useState('');
   const [loading, setLoading] = useState(false);
 
