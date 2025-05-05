@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify'; // Import DOMPurify for HTML sanitization
 
 const MarkdownEditor = () => {
   const [markdownText, setMarkdownText] = useState('Heading');
@@ -8,7 +9,8 @@ const MarkdownEditor = () => {
   useEffect(() => {
     setLoading(true);
     const parsedHtml = parseMarkdown(markdownText);
-    setHtmlOutput(parsedHtml);
+    const safeHtml = DOMPurify.sanitize(parsedHtml); // Sanitize the HTML
+    setHtmlOutput(safeHtml);
     setLoading(false);
   }, [markdownText]);
 
@@ -20,22 +22,24 @@ const MarkdownEditor = () => {
     if (!markdown) return '';
 
     let html = markdown
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-      .replace(/^\- (.*$)/gm, '<li>$1</li>')
-      .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-      .replace(/`(.*?)`/g, '<code>$1</code>')
-      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />')
-      .replace(/\n/g, '<br />');
+      .replace(/^# (.*$)/gm, '<h1>$1</h1>') // H1 headers
+      .replace(/^## (.*$)/gm, '<h2>$1</h2>') // H2 headers
+      .replace(/^### (.*$)/gm, '<h3>$1</h3>') // H3 headers
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
+      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italics text
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>') // Links
+      .replace(/^\- (.*$)/gm, '<li>$1</li>') // List items
+      .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') // Code block
+      .replace(/`(.*?)`/g, '<code>$1</code>') // Inline code
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />') // Images
+      .replace(/\n/g, '<br />'); // Line breaks
 
-    html = html.replace(/<li>.*?<\/li>/g, function(match) {
+    // Wrap all list items in a <ul> if there are multiple list items
+    html = html.replace(/(<li>.*?<\/li>)/g, function(match) {
       return '<ul>' + match + '</ul>';
     });
 
+    // Remove any extra <ul> tags that might have been added
     html = html.replace(/<\/ul><ul>/g, '');
 
     return html;
@@ -48,8 +52,9 @@ const MarkdownEditor = () => {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
+        {/* Editor Section */}
         <div className="w-1/2 p-4 border-r border-gray-300">
-          <div className=" mb-2 font-semibold text-gray-700">Editor</div>
+          <div className="mb-2 font-semibold text-gray-700">Editor</div>
           <textarea
             className="textarea markdown-input w-full h-full p-2 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={markdownText}
@@ -58,6 +63,7 @@ const MarkdownEditor = () => {
           />
         </div>
 
+        {/* Preview Section */}
         <div className="w-1/2 p-4">
           <div className="mb-2 font-semibold text-gray-700">Preview</div>
           <div
@@ -72,6 +78,7 @@ const MarkdownEditor = () => {
         </div>
       </div>
 
+      {/* Footer */}
       <footer className="bg-gray-100 p-2 text-center text-sm text-gray-600">
         React Markdown Editor - Live Preview
       </footer>
