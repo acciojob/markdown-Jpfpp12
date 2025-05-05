@@ -58,7 +58,7 @@ const MarkdownEditor = () => {
         <div className="w-1/2 p-4">
           <div className="mb-2 font-semibold text-gray-700">Preview</div>
           <div
-            className="markdown-preview h-full p-4 border border-gray-300 rounded overflow-auto"
+            className="preview h-full p-4 border border-gray-300 rounded overflow-auto"
             dangerouslySetInnerHTML={{ __html: htmlOutput }}
           />
         </div>
