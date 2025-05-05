@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 const MarkdownEditor = () => {
-  const [markdownText, setMarkdownText] = useState('Hello, Markdown!');
+  const [markdownText, setMarkdownText] = useState('# Heading');
   const [htmlOutput, setHtmlOutput] = useState('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    const timeout = setTimeout(() => {
-      const parsedHtml = parseMarkdown(markdownText);
-      setHtmlOutput(parsedHtml);
-      setLoading(false);
-    }, 300); // Simulate a delay for parsing
-    return () => clearTimeout(timeout);
+    const parsedHtml = parseMarkdown(markdownText);
+    setHtmlOutput(parsedHtml);
+    setLoading(false);
   }, [markdownText]);
 
   const handleInputChange = (e) => {
