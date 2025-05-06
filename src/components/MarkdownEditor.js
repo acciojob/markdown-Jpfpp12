@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import { marked } from 'marked';
 
 const MarkdownEditor = () => {
-  const [markdownText, setMarkdownText] = useState('# Heading');
+  const [markdownText, setMarkdownText] = useState('Heading');
   const [htmlOutput, setHtmlOutput] = useState('');
   const [loading, setLoading] = useState(false);
 
