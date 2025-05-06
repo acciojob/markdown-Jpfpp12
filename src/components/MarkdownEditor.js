@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
-import "./App.css"
+
 const MarkdownEditor = () => {
   const [markdownText, setMarkdownText] = useState('Heading');
   const [htmlOutput, setHtmlOutput] = useState('');
