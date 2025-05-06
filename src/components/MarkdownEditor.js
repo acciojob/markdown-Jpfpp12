@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import DOMPurify from 'dompurify'; // Import DOMPurify for HTML sanitization
+import DOMPurify from 'dompurify';
+import { marked } from 'marked'; 
 
 const MarkdownEditor = () => {
   const [markdownText, setMarkdownText] = useState('Heading');
@@ -8,7 +9,7 @@ const MarkdownEditor = () => {
 
   useEffect(() => {
     setLoading(true);
-    const parsedHtml = parseMarkdown(markdownText);
+    const parsedHtml = marked(markdownText); // Use marked to parse markdown to HTML
     const safeHtml = DOMPurify.sanitize(parsedHtml); // Sanitize the HTML
     setHtmlOutput(safeHtml);
     setLoading(false);
@@ -16,33 +17,6 @@ const MarkdownEditor = () => {
 
   const handleInputChange = (e) => {
     setMarkdownText(e.target.value);
-  };
-
-  const parseMarkdown = (markdown) => {
-    if (!markdown) return '';
-
-    let html = markdown
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>') // H1 headers
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>') // H2 headers
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>') // H3 headers
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold text
-      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italics text
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>') // Links
-      .replace(/^\- (.*$)/gm, '<li>$1</li>') // List items
-      .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>') // Code block
-      .replace(/`(.*?)`/g, '<code>$1</code>') // Inline code
-      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />') // Images
-      .replace(/\n/g, '<br />'); // Line breaks
-
-    // Wrap all list items in a <ul> if there are multiple list items
-    html = html.replace(/(<li>.*?<\/li>)/g, function(match) {
-      return '<ul>' + match + '</ul>';
-    });
-
-    // Remove any extra <ul> tags that might have been added
-    html = html.replace(/<\/ul><ul>/g, '');
-
-    return html;
   };
 
   return (
