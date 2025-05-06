@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 
 const MarkdownEditor = () => {
-  const [markdownText, setMarkdownText] = useState('Heading');
+  const [markdownText, setMarkdownText] = useState('#Heading');
   const [htmlOutput, setHtmlOutput] = useState('');
   const [loading, setLoading] = useState(false);
 
