@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
 const MarkdownEditor = () => {
@@ -8,7 +9,7 @@ const MarkdownEditor = () => {
 
   useEffect(() => {
     setLoading(true);
-    const parsedHtml = parseMarkdown(markdownText);
+    const parsedHtml = marked(markdownText);
     const safeHtml = DOMPurify.sanitize(parsedHtml);
     setHtmlOutput(safeHtml);
     setLoading(false);
@@ -16,31 +17,6 @@ const MarkdownEditor = () => {
 
   const handleInputChange = (e) => {
     setMarkdownText(e.target.value);
-  };
-
-  const parseMarkdown = (markdown) => {
-    if (!markdown) return '';
-
-    let html = markdown
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-      .replace(/^\- (.*$)/gm, '<li>$1</li>')
-      .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-      .replace(/`(.*?)`/g, '<code>$1</code>')
-      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" />')
-      .replace(/\n/g, '<br />');
-
-    html = html.replace(/(<li>.*?<\/li>)/g, function(match) {
-      return '<ul>' + match + '</ul>';
-    });
-
-    html = html.replace(/<\/ul><ul>/g, '');
-
-    return html;
   };
 
   return (
@@ -62,9 +38,7 @@ const MarkdownEditor = () => {
 
         <div className="w-1/2 p-4">
           <div className="mb-2 font-semibold text-gray-700">Preview</div>
-          <div
-            className="preview h-full p-4 border border-gray-300 rounded overflow-auto"
-          >
+          <div className="preview h-full p-4 border border-gray-300 rounded overflow-auto">
             {loading ? (
               <div className="loading text-center text-gray-500">Loading...</div>
             ) : (
