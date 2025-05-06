@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked'; 
+import "./styles/App.css";
 
 const MarkdownEditor = () => {
   const [markdownText, setMarkdownText] = useState('Heading');
