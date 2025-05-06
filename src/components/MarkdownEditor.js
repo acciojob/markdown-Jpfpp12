@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
-import marked from 'marked';
+import { marked } from 'marked';
 
 const MarkdownEditor = () => {
   const [markdownText, setMarkdownText] = useState('# Heading');
