@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import marked from 'marked';
 
 const MarkdownEditor = () => {
   const [markdownText, setMarkdownText] = useState('# Heading');
@@ -9,9 +9,9 @@ const MarkdownEditor = () => {
 
   useEffect(() => {
     setLoading(true);
-    const parsedHtml = marked(markdownText);
-    const safeHtml = DOMPurify.sanitize(parsedHtml);
-    setHtmlOutput(safeHtml);
+    const parsedHtml = marked(markdownText); 
+    const safeHtml = DOMPurify.sanitize(parsedHtml); 
+    setHtmlOutput(safeHtml); // Set sanitized HTML output
     setLoading(false);
   }, [markdownText]);
 
@@ -38,7 +38,9 @@ const MarkdownEditor = () => {
 
         <div className="w-1/2 p-4">
           <div className="mb-2 font-semibold text-gray-700">Preview</div>
-          <div className="preview h-full p-4 border border-gray-300 rounded overflow-auto">
+          <div
+            className="preview h-full p-4 border border-gray-300 rounded overflow-auto"
+          >
             {loading ? (
               <div className="loading text-center text-gray-500">Loading...</div>
             ) : (
