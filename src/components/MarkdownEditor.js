@@ -9,9 +9,9 @@ const MarkdownEditor = () => {
 
   useEffect(() => {
     setLoading(true);
-    const parsedHtml = marked(markdownText); 
-    const safeHtml = DOMPurify.sanitize(parsedHtml); 
-    setHtmlOutput(safeHtml); // Set sanitized HTML output
+    const parsedHtml = marked(markdownText);
+    const safeHtml = DOMPurify.sanitize(parsedHtml);
+    setHtmlOutput(safeHtml);
     setLoading(false);
   }, [markdownText]);
 
@@ -38,15 +38,13 @@ const MarkdownEditor = () => {
 
         <div className="w-1/2 p-4">
           <div className="mb-2 font-semibold text-gray-700">Preview</div>
-          <div
-            className="preview h-full p-4 border border-gray-300 rounded overflow-auto"
-          >
+          <h1 className="preview h-full p-4 border border-gray-300 rounded overflow-auto">
             {loading ? (
               <div className="loading text-center text-gray-500">Loading...</div>
             ) : (
               <div dangerouslySetInnerHTML={{ __html: htmlOutput }} />
             )}
-          </div>
+          </h1>
         </div>
       </div>
 
